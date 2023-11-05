@@ -10,7 +10,11 @@ const Tab = createBottomTabNavigator();
 const HomeScreen = () => {
   return (
     <NavigationContainer independent={true}>
-      <Tab.Navigator>
+      <Tab.Navigator
+        screenOptions={{
+          headerShown: false, // Hide the header for all screens in this navigator
+        }}
+      >
         <Tab.Screen name="Budgeting" component={BudgetingPage} />
         <Tab.Screen name="Home" component={HomeContent} />
         <Tab.Screen name="Subscription" component={SubscriptionPage} />

@@ -7,12 +7,11 @@ import axios from 'axios';
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigation = useNavigation();
 
   const handleLogin = async () => {
     navigation.navigate('HomeScreen');
   };
-
-  const navigation = useNavigation();
 
   const navigateToSignup = () => {
     navigation.navigate('Signup');
