@@ -30,10 +30,11 @@ const HomeScreen = () => {
           inactiveTintColor: 'gray',
         }}
       >
+        <Tab.Screen name="Questionnaire" component={QuestionnairePage} />
         <Tab.Screen name="Budgeting" component={BudgetingPage} />
         <Tab.Screen name="Home" component={HomeContent} options={{ tabBarIcon: ({ focused, color, size }) => <Image source={require('./images/home.png')} style={{ width: 24, height: 24, tintColor: color }} /> }} />
         <Tab.Screen name="Subscription" component={SubscriptionPage} />
-        <Tab.Screen name="Questionnaire" component={QuestionnairePage} />
+        
       </Tab.Navigator>
     </NavigationContainer>
   );

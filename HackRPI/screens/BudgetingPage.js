@@ -30,17 +30,17 @@ const BudgetingPage = () => {
     {
       id: 1,
       title: 'Basic Plan',
-      description: 'This is the basic plan with essential features.',
+      description: 'This is the basic plan with essential features. \n\n20% savings/paying back debt \n50% goes to necessities (food, mortgage, etc)\n30% goes to discretionary items ',
     },
     {
       id: 2,
-      title: 'Standard Plan',
-      description: 'Upgrade to our standard plan for more advanced features.',
+      title: 'Savings Plan',
+      description: 'This is the savings plan with essential features. \n\n25% saving/paying back debt\n50% goes to necessities\n25% goes to discretionary items',
     },
     {
       id: 3,
-      title: 'Premium Plan',
-      description: 'Our premium plan offers exclusive features and benefits.',
+      title: 'Spending Plan',
+      description: 'This is the spending plan with essential features. \n\n15% saving/paying back debt\n50% goes to necessities\n35% goes to discretionary items',
     },
   ];
 
