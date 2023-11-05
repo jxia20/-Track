@@ -17,9 +17,9 @@ const HomeScreen = () => {
           tabBarIcon: ({ focused, color, size }) => {
             let iconSource;
             if (focused) {
-              iconSource = require('./images/home.png');
+              iconSource = require('./images/squirrel.jpg');
             } else {
-              iconSource = require('./images/home_inactive.png');
+              iconSource = require('./images/3.jpg');
             }
             return <Image source={iconSource} style={{ width: 24, height: 24, tintColor: color }} />;
           },
