@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
   image: {
     width: 300,
     height: 300,
-    borderWidth: 3, // Border width for the images
+    borderWidth: 2, // Border width for the images
     borderColor: 'black', // Border color for the images
   },
   // Style for the preview indicators container
