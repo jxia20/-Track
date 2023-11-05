@@ -1,86 +1,178 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TextInput } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useState } from 'react';
+import { View, TextInput, Button, Text, StyleSheet, Alert, TouchableWithoutFeedback, Keyboard, ScrollView } from 'react-native';
 
-const saveInputToLocalStorage = async (key, value) => {
-  try {
-    await AsyncStorage.setItem(key, value);
-    // You can also handle success or show a confirmation message here.
-    //console.log(value);
-  } catch (error) {
-    // Handle errors, such as storage limit exceeded.
-    console.error(error);
-  }
-};
+const QuestionnairePage = ({ navigation }) => {
+  const [age, setAge] = useState('');
+  const [employmentStatus, setEmploymentStatus] = useState('');
+  const [pensionStatus, setPensionStatus] = useState('');
+  const [loans, setLoans] = useState('');
+  const [subscriptions, setSubscriptions] = useState('');
+  const [income, setIncome] = useState('');
+  const [budget, setBudget] = useState('');
+  const [answers, setAnswers] = useState(null);
 
-const QuestionnairePage = () => {
-  const [age, setAge] = useState(''); // Use setAge to update the age state
-  const options = [
-    { label: 'Unemployed', value: 1 },
-  ];
+  const handleSubmit = () => {
+    if (age.trim() === '' && employmentStatus.trim() === '') {
+      // Show an error message if both fields are empty
+      Alert.alert('Error', 'Please fill out all the fields.');
+    } else if (age.trim() === '') {
+      // Show an error message if age is empty
+      Alert.alert('Error', 'Please fill out the age field.');
+    } else if (employmentStatus.trim() === '') {
+      // Show an error message if employmentStatus is empty
+      Alert.alert('Error', 'Please fill out the employment status field.');
+    } else {
+      // Save the answers to local state
+      const userAnswers = {
+        age: age,
+        employmentStatus: employmentStatus,
+        pensionStatus: pensionStatus,
+        loans: loans,
+        subscriptions: subscriptions,
+        income: income,
+        budget: budget,
+      };
+      setAnswers(userAnswers);
 
-  // Load the saved input from local storage when the component is mounted
-  useEffect(() => {
-    const loadInputFromLocalStorage = async () => {
-      try {
-        const savedAge = await AsyncStorage.getItem('userInput');
-        if (savedAge !== null) {
-          setAge(savedAge);
-        }
-      } catch (error) {
-        // Handle errors, if any.
-        console.error(error);
-      }
-    };
+      // Optionally, reset the form fields
+      setAge('');
+      setEmploymentStatus('');
+      setPensionStatus('');
+      setLoans('');
+      setSubscriptions('');
+      setIncome('');
+      setBudget('');
 
-    loadInputFromLocalStorage();
-  }, []);
+      Alert.alert('Success', 'Answers submitted successfully!');
+    }
+  };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Questionnaire</Text>
-      <ScrollView>
-        <Text style={styles.scrollItem}>Age:</Text>
-        <TextInput
-          style={styles.textIn}
-          placeholder="Age"
-          value={age}
-          onChangeText={(newAge) => {
-            setAge(newAge);
-            saveInputToLocalStorage('userInput', newAge);
-          }}
-        />
-
-        <Text style={styles.scrollItem}>Employment Status:</Text>
-        <Text style={styles.scrollItem}>Do you have a Pension?</Text>
-        <Text style={styles.scrollItem}>Loans:</Text>
-        <Text style={styles.scrollItem}>Subscriptions</Text>
-        <Text style={styles.scrollItem}>Income:</Text>
-        <Text style={styles.scrollItem}>Budget</Text>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <ScrollView contentContainerStyle={styles.container}>
+        <View style={styles.formContainer}>
+          <Text style={styles.title}>Questionnaire</Text>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Age:</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter your age"
+              keyboardType="numeric"
+              value={age}
+              onChangeText={(text) => setAge(text)}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Employment Status:</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter your employment status"
+              value={employmentStatus}
+              onChangeText={(text) => setEmploymentStatus(text)}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Pension Status (N/A if not retired):</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter your pension status"
+              value={pensionStatus}
+              onChangeText={(text) => setPensionStatus(text)}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Loans:</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter your loans status"
+              value={loans}
+              onChangeText={(text) => setLoans(text)}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Subscriptions:</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter your subscriptions status"
+              value={subscriptions}
+              onChangeText={(text) => setSubscriptions(text)}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Income:</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter your income"
+              keyboardType="numeric"
+              value={income}
+              onChangeText={(text) => setIncome(text)}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Budget:</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter your budget"
+              keyboardType="numeric"
+              value={budget}
+              onChangeText={(text) => setBudget(text)}
+            />
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button title="Submit" onPress={handleSubmit} />
+          </View>
+          {answers && (
+            <Button
+              title="View Subscriptions"
+              onPress={() => {
+                // Navigate to SubscriptionsPage and pass the answers as a parameter
+                navigation.navigate('Subscription', { answers });
+              }}
+            />
+          )}
+        </View>
       </ScrollView>
-    </View>
+    </TouchableWithoutFeedback>
+
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexGrow: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start', // Align content to the left
+    padding: 20,
   },
   title: {
     fontSize: 24,
-    marginTop: 70,
+    marginBottom: 20,
+    marginTop:30,
+    alignSelf: 'flex-start', // Align text to the left
   },
-  scrollItem: {
-    marginTop: 20,
+  label: {
     fontSize: 18,
+    marginBottom: 10,
+    alignSelf: 'flex-start', // Align text to the left
   },
-  textIn: {
+  input: {
     height: 40,
-    margin: 12,
+    borderColor: 'gray',
     borderWidth: 1,
-    padding: 10,
+    marginBottom: 20,
+    width: '80%',
+    paddingHorizontal: 10,
+    alignSelf: 'flex-start', // Align input to the left
+  },
+  inputContainer: {
+    marginBottom: 20,
+    width: 300,
+  },
+  buttonContainer: {
+    marginTop: -30,
+    marginLeft: -10,
+    alignItems: 'center', // Center the content horizontally
+    width: '100%', // Take the full width of the parent container
   },
 });
 

@@ -1,31 +1,30 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 
-const SubscriptionPage = () => {
-  const [subscriptionAmount, setSubscriptionAmount] = useState('');
+const SubscriptionsPage = ({ route }) => {
+  // Check if route object is undefined or missing params property
+  if (!route || !route.params || !route.params.answers) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.title}>Subscription Details</Text>
+        <Text style={styles.label}>Subscription details not available.</Text>
+      </View> // Display a message if route or answers object is missing
+    );
+  }
 
-  const handleSubscriptionAmountChange = (text) => {
-    // Update the subscription amount when the user types in the TextInput
-    setSubscriptionAmount(text);
-  };
-
-  const saveSubscriptionAmount = () => {
-    // Handle saving the subscription amount to your data store or API
-    // For now, let's just log it to the console
-    console.log('Monthly Subscription Amount:', subscriptionAmount);
-  };
+  const { answers } = route.params;
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Subscription Page</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter monthly subscription amount"
-        keyboardType="numeric"
-        value={subscriptionAmount}
-        onChangeText={handleSubscriptionAmountChange}
-      />
-      <Button title="Save" onPress={saveSubscriptionAmount} />
+      <Text style={styles.title}>Subscription Details</Text>
+      <Text style={styles.label}>Age: {answers.age}</Text>
+      <Text style={styles.label}>Employment Status: {answers.employmentStatus}</Text>
+      <Text style={styles.label}>Pension Status: {answers.pensionStatus}</Text>
+      <Text style={styles.label}>Loans: {answers.loans}</Text>
+      <Text style={styles.label}>Subscriptions: {answers.subscriptions}</Text>
+      <Text style={styles.label}>Income: {answers.income}</Text>
+      <Text style={styles.label}>Budget: {answers.budget}</Text>
+      {/* Display more subscription details as needed */}
     </View>
   );
 };
@@ -35,18 +34,16 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 20,
   },
   title: {
     fontSize: 24,
     marginBottom: 20,
   },
-  input: {
-    height: 40,
-    width: '80%',
-    borderWidth: 1,
-    padding: 10,
-    marginBottom: 20,
+  label: {
+    fontSize: 18,
+    marginBottom: 10,
   },
 });
 
-export default SubscriptionPage;
+export default SubscriptionsPage;

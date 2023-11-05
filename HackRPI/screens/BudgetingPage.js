@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Modal, Button } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, Modal, Button, TextInput } from 'react-native';
 import ImageSlideshow from './images/image_slideshow';
 
 const BudgetingPage = () => {
@@ -13,6 +13,18 @@ const BudgetingPage = () => {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
+
+  const [newBudget, setNewBudget] = useState('');
+
+  const updateBudget = () => {
+    if (!isNaN(newBudget) && newBudget !== '') {
+      setUserProfile(prevProfile => ({
+        ...prevProfile,
+        budgetAmount: parseFloat(newBudget),
+      }));
+      setModalVisible(false);
+    }
+  };
 
   const plans = [
     {
@@ -49,17 +61,44 @@ const BudgetingPage = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Profile</Text>
+    <View style={styles.header}>
+      <Text style={styles.headerText}>Profile</Text>
       </View>
       <ScrollView contentContainerStyle={styles.contentContainer}>
         <View style={styles.profileInfo}>
           <Image source={userProfile.profilePicture} style={styles.profilePicture} />
           <View style={styles.textContainer}>
-            <Text style={styles.profileText}>Name: {userProfile.name}</Text>
-            <Text style={styles.profileText}>Email: {userProfile.email}</Text>
-            <Text style={styles.profileText}>Budget Amount: ${userProfile.budgetAmount}</Text>
-            <Text style={styles.profileText}>Budget Plan: {userProfile.budgetPlan}</Text>
+            <TouchableOpacity onPress={() => setModalVisible(true)}>
+              <Text style={styles.profileText}>Name: {userProfile.name}</Text>
+              <Text style={styles.profileText}>Email: {userProfile.email}</Text>
+              <TouchableOpacity
+                style={styles.budgetTextContainer}
+                onPress={() => setModalVisible(true)}
+              >
+                <Text style={styles.budgetText}>
+                  Budget Amount: ${userProfile.budgetAmount}
+                </Text>
+              </TouchableOpacity>
+              <Text style={styles.profileText}>Budget Plan: {userProfile.budgetPlan}</Text>
+            </TouchableOpacity>
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => setModalVisible(false)}
+              >
+                <View style={styles.modalContainer}>
+                  <View style={styles.modalContent}>
+                    <Text style={styles.modalTitle}>Enter New Budget Amount:</Text>
+                    <TextInput
+                      style={styles.input}
+                      keyboardType="numeric"
+                      onChangeText={text => setNewBudget(text)}
+                    />
+                    <Button title="Update" onPress={updateBudget} />
+                  </View>
+                </View>
+              </Modal>
           </View>
         </View>
 
@@ -121,6 +160,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 20,
     paddingRight: 225,
+  },
+  budgetTextContainer: {
+    flexDirection: 'row',
+  },
+  budgetText: {
+    color: 'blue',
+    textDecorationLine: 'underline',
   },
   headerText: {
     fontSize: 24,
@@ -198,6 +244,15 @@ const styles = StyleSheet.create({
   },
   modalButton: {
     marginHorizontal: 50,
+  },
+  input: {
+    height: 40,
+    width: 100,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 10,
+    paddingHorizontal: 10,
+    marginTop: 10,
   },
 });
 

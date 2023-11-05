@@ -1,10 +1,10 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
-import BudgetingPage from './BudgetingPage'; // Import your BudgetingPage component
-import SubscriptionPage from './SubscriptionPage'; // Import your SubscriptionPage component
+import BudgetingPage from './BudgetingPage';
+import SubscriptionPage from './SubscriptionPage';
+import QuestionnairePage from './QuestionnairePage';
 import { View, Text, StyleSheet, Image } from 'react-native';
-import QuestionnairePage from './QuestionnairePage'; // Import your SubscriptionPage component
 
 const Tab = createBottomTabNavigator();
 
@@ -12,8 +12,9 @@ const HomeScreen = () => {
   return (
     <NavigationContainer independent={true}>
       <Tab.Navigator
+        initialRouteName="Home" // Set the initialRouteName to 'Home'
         screenOptions={{
-          headerShown: false, // Hide the header for all screens in this navigator
+          headerShown: false,
           tabBarIcon: ({ focused, color, size }) => {
             let iconSource;
             if (focused) {
@@ -32,8 +33,7 @@ const HomeScreen = () => {
         <Tab.Screen name="Budgeting" component={BudgetingPage} />
         <Tab.Screen name="Home" component={HomeContent} options={{ tabBarIcon: ({ focused, color, size }) => <Image source={require('./images/home.png')} style={{ width: 24, height: 24, tintColor: color }} /> }} />
         <Tab.Screen name="Subscription" component={SubscriptionPage} />
-        <Tab.Screen name="questionnaire" component={QuestionnairePage} />
-        
+        <Tab.Screen name="Questionnaire" component={QuestionnairePage} />
       </Tab.Navigator>
     </NavigationContainer>
   );
@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: -300,
   },
   title: {
     fontSize: 24,
