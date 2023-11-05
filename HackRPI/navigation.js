@@ -9,9 +9,18 @@ import HomeScreen from './screens/homeScreen';
 const Stack = createNativeStackNavigator();
 
 const AppNavigator = () => {
+  const screenOptions = {
+    headerShown: true, // Show header for all screens by default
+    tabBarActiveTintColor: 'blue',
+    tabBarInactiveTintColor: 'gray',
+    tabBarStyle: {
+      display: 'flex',
+    },
+  };
+  
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={screenOptions}>
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Signup" component={SignupScreen} />
         <Stack.Screen
@@ -25,5 +34,6 @@ const AppNavigator = () => {
     </NavigationContainer>
   );
 };
+
 
 export default AppNavigator;

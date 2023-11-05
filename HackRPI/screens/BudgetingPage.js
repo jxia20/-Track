@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: 'white',
     marginRight: 40,
-    marginTop: 25,
+    marginTop: 30,
   },
   profilePicture: {
     width: 70,
