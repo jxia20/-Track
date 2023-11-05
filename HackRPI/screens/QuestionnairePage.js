@@ -1,15 +1,28 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text, StyleSheet, Alert, TouchableWithoutFeedback, Keyboard, ScrollView } from 'react-native';
+import { View, TextInput, Button, Text, StyleSheet, Alert, TouchableWithoutFeedback, Keyboard, ScrollView, SectionList, TouchableOpacity } from 'react-native';
 
 const QuestionnairePage = ({ navigation }) => {
   const [age, setAge] = useState('');
   const [employmentStatus, setEmploymentStatus] = useState('');
   const [pensionStatus, setPensionStatus] = useState('');
   const [loans, setLoans] = useState('');
-  const [subscriptions, setSubscriptions] = useState('');
+  const [subscriptions, setSubscriptions] = useState([]);
+  const [newSubscription, setNewSubscription] = useState('');
   const [income, setIncome] = useState('');
   const [budget, setBudget] = useState('');
   const [answers, setAnswers] = useState(null);
+
+  const addSubscription = () => {
+    if (newSubscription.trim() !== '') {
+      setSubscriptions([...subscriptions, newSubscription]);
+      setNewSubscription('');
+    }
+  };
+
+  const removeSubscription = (index) => {
+    const updatedSubscriptions = subscriptions.filter((_, i) => i !== index);
+    setSubscriptions(updatedSubscriptions);
+  };
 
   const handleSubmit = () => {
     if (age.trim() === '' && employmentStatus.trim() === '') {
@@ -33,15 +46,6 @@ const QuestionnairePage = ({ navigation }) => {
         budget: budget,
       };
       setAnswers(userAnswers);
-
-      // Optionally, reset the form fields
-      setAge('');
-      setEmploymentStatus('');
-      setPensionStatus('');
-      setLoans('');
-      setSubscriptions('');
-      setIncome('');
-      setBudget('');
 
       Alert.alert('Success', 'Answers submitted successfully!');
     }
@@ -89,15 +93,32 @@ const QuestionnairePage = ({ navigation }) => {
               onChangeText={(text) => setLoans(text)}
             />
           </View>
-          <View style={styles.inputContainer}>
-            <Text style={styles.label}>Subscriptions:</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter your subscriptions status"
-              value={subscriptions}
-              onChangeText={(text) => setSubscriptions(text)}
-            />
-          </View>
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Subscriptions:</Text>
+              <SectionList
+                sections={[
+                  { data: subscriptions },
+                ]}
+                renderItem={({ item, index }) => (
+                  <View style={styles.subscriptionItem}>
+                    <Text>{item}</Text>
+                    <TouchableOpacity onPress={() => removeSubscription(index)}>
+                      <Text style={styles.removeButton}>Remove</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+                keyExtractor={(item, index) => index.toString()}
+              />
+                <TextInput 
+                style={styles.input}
+                  placeholder="Enter subscription"
+                  value={newSubscription}
+                  onChangeText={(text) => setNewSubscription(text)}
+                />
+              <TouchableOpacity onPress={addSubscription}>
+                  <Text style={styles.addButton}>Add</Text>
+                </TouchableOpacity>
+            </View>
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Income:</Text>
             <TextInput
@@ -173,6 +194,19 @@ const styles = StyleSheet.create({
     marginLeft: -10,
     alignItems: 'center', // Center the content horizontally
     width: '100%', // Take the full width of the parent container
+  },
+  addButton: {
+    color: 'blue',
+    marginLeft: 3,
+  },
+  subscriptionItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  removeButton: {
+    color: 'red',
   },
 });
 
