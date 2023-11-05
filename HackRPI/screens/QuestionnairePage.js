@@ -6,7 +6,7 @@ const saveInputToLocalStorage = async (key, value) => {
   try {
     await AsyncStorage.setItem(key, value);
     // You can also handle success or show a confirmation message here.
-    console.log(value);
+    //console.log(value);
   } catch (error) {
     // Handle errors, such as storage limit exceeded.
     console.error(error);
