@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import BudgetingPage from './BudgetingPage'; // Import your BudgetingPage component
 import SubscriptionPage from './SubscriptionPage'; // Import your SubscriptionPage component
 import { View, Text, StyleSheet, Image } from 'react-native';
+import QuestionnairePage from './QuestionnairePage'; // Import your SubscriptionPage component
 
 const Tab = createBottomTabNavigator();
 
@@ -31,6 +32,8 @@ const HomeScreen = () => {
         <Tab.Screen name="Budgeting" component={BudgetingPage} />
         <Tab.Screen name="Home" component={HomeContent} options={{ tabBarIcon: ({ focused, color, size }) => <Image source={require('./images/home.png')} style={{ width: 24, height: 24, tintColor: color }} /> }} />
         <Tab.Screen name="Subscription" component={SubscriptionPage} />
+        <Tab.Screen name="questionnaire" component={QuestionnairePage} />
+        
       </Tab.Navigator>
     </NavigationContainer>
   );
